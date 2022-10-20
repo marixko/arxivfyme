@@ -49,11 +49,10 @@ def clean(s):
     return s
 
 
-def show_wordcloud(data, max_words):
+def show_wordcloud(data, maxwords):
     cloud = WordCloud(
         background_color='white',
-        stopwords=stopwords,
-        max_words=100,
+        max_words=maxwords,
         max_font_size=30,
         scale=3,
         random_state=1)
