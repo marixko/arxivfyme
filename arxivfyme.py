@@ -5,7 +5,7 @@ from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
 import streamlit as st
-from utils import clean
+from utils import clean, show_wordcloud
 
 nltk.download("omw-1.4")
 nltk.download("punkt")
