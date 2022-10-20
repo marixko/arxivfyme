@@ -31,7 +31,6 @@ tokens = df_pandas["summary"].agg(clean)
 df_pandas["tokens"] = tokens
 df_pandas['tokens_str'] = df_pandas['tokens'].apply(lambda x: ','.join(map(str, x)))
 text = " ".join(summ for summ in df_pandas.tokens_str.astype(str))
-show_wordcloud(text)
 
-fig = show_wordcloud(st.slider('max_words', 5, 500, 200, step = 10))
+fig = show_wordcloud(text, st.slider('max_words', 5, 500, 200, step = 10))
 st.pyplot(fig)
