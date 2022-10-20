@@ -13,7 +13,7 @@ nltk.download("stopwords")
 nltk.download("wordnet")
 
 st.title('arXivfy me')
-st.set_option('deprecation.showPyplotGlobalUse', False)
+# st.set_option('deprecation.showPyplotGlobalUse', False)
 
 stemmer = PorterStemmer()
 vectorizer = TfidfVectorizer()
