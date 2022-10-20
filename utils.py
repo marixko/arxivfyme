@@ -10,6 +10,8 @@ from nltk.corpus import stopwords
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
+nltk.download("stopwords")
+
 def get_top_ngram(corpus, n=None):
     vec = CountVectorizer(ngram_range=(n, n)).fit(corpus)
     bag_of_words = vec.transform(corpus)
@@ -26,6 +28,7 @@ def tokenize(s):
     return word_tokenize(s, language="english")
 
 def remove_stopwords(s):
+    stpwrds = set(stopwords.words("english"))
     return [w for w in s if not w in stpwrds]
 
 def stem(s):
