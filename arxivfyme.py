@@ -1,17 +1,9 @@
 import pandas as pd
-import numpy as np
 import streamlit as st
-from nltk import word_tokenize 
-from nltk.util import ngrams
-from sklearn.feature_extraction.text import CountVectorizer
 import nltk
-import string
-import re
 from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
-from wordcloud import WordCloud
-import matplotlib.pyplot as plt
 import streamlit as st
 
 nltk.download("omw-1.4")
