@@ -1,0 +1,44 @@
+import pandas as pd
+import numpy as np
+import streamlit as st
+from nltk import word_tokenize 
+from nltk.util import ngrams
+from sklearn.feature_extraction.text import CountVectorizer
+import nltk
+import string
+import re
+from nltk.stem import PorterStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.corpus import stopwords
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import streamlit as st
+
+nltk.download("omw-1.4")
+nltk.download("punkt")
+nltk.download("stopwords")
+nltk.download("wordnet")
+
+st.title('arXivfy me')
+
+stemmer = PorterStemmer()
+vectorizer = TfidfVectorizer()
+stpwrds = set(stopwords.words("english"))
+
+# read with pandas
+df_pandas = pd.read_json('arxivData.json')
+
+# convert string to python object
+for key in ["author", "link", "tag"]:
+    df_pandas[key] = df_pandas[key].agg(eval, axis=0)
+
+df_pandas.head()
+
+tokens = df_pandas["summary"].agg(clean)
+df_pandas["tokens"] = tokens
+df_pandas['tokens_str'] = df_pandas['tokens'].apply(lambda x: ','.join(map(str, x)))
+text = " ".join(summ for summ in df_pandas.tokens_str.astype(str))
+show_wordcloud(text)
+
+fig = show_wordcloud(st.slider('max_words', 5, 500, 200, step = 10))
+st.pyplot(fig)
