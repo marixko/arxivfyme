@@ -11,7 +11,12 @@ from nltk.corpus import stopwords
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 
+
 nltk.download("stopwords")
+stpwrds = set(stopwords.words("english"))
+additional_stopwords = set(('ie', 'eg', 'cf', 'etc', 'et', 'al'))
+stpwrds.update(additional_stopwords)
+
 
 def get_top_ngram(corpus, n=None):
     vec = CountVectorizer(ngram_range=(n, n)).fit(corpus)
@@ -22,6 +27,18 @@ def get_top_ngram(corpus, n=None):
     words_freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
     return words_freq[:10]
 
+def remove_latex(s):
+    regex = r"(\$+)(?:(?!\1)[\s\S])*\1"
+    subst = ""
+    result = re.sub(regex, subst, s, 0, re.MULTILINE)
+    return result
+
+def remove_punctuation(s):
+    s = re.sub(r'\d+', '', s) # remove numbers
+    s = "".join([char.lower() for char in s if char not in string.punctuation]) # remove punctuations and convert characters to lower case
+    s = re.sub('\s+', ' ', s).strip() # substitute multiple whitespace with single whitespace
+    return s
+
 def remove_linebreaks(s):
     return s.replace("\n", " ")
 
@@ -29,7 +46,6 @@ def tokenize(s):
     return word_tokenize(s, language="english")
 
 def remove_stopwords(s):
-    stpwrds = set(stopwords.words("english"))
     return [w for w in s if not w in stpwrds]
 
 def stem(s):
@@ -38,16 +54,19 @@ def stem(s):
 def vectorize(s):
     return vectorizer.fit_transform(s)
 
+def lemmatizer(s):
+    lemmatizer = nltk.stem.WordNetLemmatizer()
+    s = [lemmatizer.lemmatize(w.lower()) for w in s]
+    return s
+
 def clean(s):
-    s = re.sub(r'\d+', '', s) # remove numbers
-    s = "".join([char.lower() for char in s if char not in string.punctuation]) # remove punctuations and convert characters to lower case
-    s = re.sub('\s+', ' ', s).strip() # substitute multiple whitespace with single whitespace
+    s = remove_latex(s)
+    s = remove_punctuation(s)
     s = remove_linebreaks(s)
     s = tokenize(s)
     s = remove_stopwords(s)
-    # s = stem(s)
+    s = lemmatizer(s)
     return s
-
 
 def show_wordcloud(data, maxwords):
     cloud = WordCloud(
