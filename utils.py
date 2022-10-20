@@ -6,6 +6,7 @@ from nltk.util import ngrams
 from sklearn.feature_extraction.text import CountVectorizer
 import string
 import re
+import nltk
 from nltk.corpus import stopwords
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
