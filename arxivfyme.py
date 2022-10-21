@@ -52,8 +52,8 @@ stpwrds.update(additional_stopwords)
 # st.pyplot(fig)
 
 
-df_astro = pd.read_json("astro_ph_2022.json")#[:N_max]
-df_bio = pd.read_json("q_bio_2022.json")
+df_astro = pd.read_json("astro_ph_2022.json", dtype={'id': 'string'}) #[:N_max]
+df_bio = pd.read_json("q_bio_2022.json", , dtype={'id': 'string'})
 df = pd.concat([df_astro, df_bio])
 df.reset_index(inplace=True)
 
