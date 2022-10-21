@@ -68,7 +68,7 @@ with open('vectorizer.pickle', 'rb') as f:
 
 st.header("How does it work?")
 st.markdown("Let's use https://arxiv.org/abs/2207.00322 as an example. The ID for this paper is 2207.00322. Let's check the 5 most recommended articles based on our entry.")
-data = get_paper_information("2110.13901")
+data = get_paper_information("2207.00322")
 give_recomm(data["abstract"], vectorizer, df, 5)
 
 st.header("See what arXivfyMe recommends you today!")
