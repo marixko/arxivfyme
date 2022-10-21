@@ -6,7 +6,7 @@ from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
 import streamlit as st
-from utils import cleanv2, show_wordcloud, get_paper_information, give_recomm  
+from utils import cleanv2, show_wordcloud, get_paper_information, give_recomm
 from PIL import Image
 import dill as pickle
 
@@ -45,8 +45,7 @@ stpwrds.update(additional_stopwords)
 # df = pd.read_json('astro_ph_2022.json')
 
 
-
-df_astro = pd.read_json("astro_ph_2022.json", dtype={'id': 'string'}) #[:N_max]
+df_astro = pd.read_json("astro_ph_2022.json", dtype={'id': 'string'})  # [:N_max]
 df_bio = pd.read_json("q_bio_2022.json", dtype={'id': 'string'})
 df = pd.concat([df_astro, df_bio])
 df.reset_index(inplace=True)
@@ -70,11 +69,12 @@ give_recomm(data["abstract"], vectorizer, df, 5)
 st.header("See what arXivfyMe recommends you today!")
 
 st.markdown("Based on any article, this app will check what are the most recommended articles for you to check out.")
-id = st.text_input("Write down an arXiv's ID (e.g. it can be one of your published articles or one that you really like):")
-n = st.sidebar.slider("Number of recommendations", 0,50,5)
+id = st.text_input(
+    "Write down an arXiv's ID (e.g. it can be one of your published articles or one that you really like):")
+n = st.sidebar.slider("Number of recommendations", 0, 50, 5)
 data = get_paper_information(id)
 
-output = give_recomm(data["abstract"], vectorizer,df, n )
+output = give_recomm(data["abstract"], vectorizer, df, n)
 
 
 st.header("Wordcloud")
@@ -84,6 +84,5 @@ output["tokens"] = tokens
 output['tokens_str'] = output['tokens'].apply(lambda x: ','.join(map(str, x)))
 text = " ".join(summ for summ in output.tokens_str.astype(str))
 
-fig = show_wordcloud(text, st.slider('max_words', 10, 200, 50, step = 10))
+fig = show_wordcloud(text, st.slider('max_words', 10, 200, 50, step=10))
 st.pyplot(fig)
-
