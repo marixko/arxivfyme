@@ -1,0 +1,82 @@
+# Starting with PEP 621 (June 2020), the Python community selected pyproject.toml as a
+# standard way of specifying project metadata. Setuptools has adopted this
+# standard and will use the information contained in this file as an input in
+# the build process.
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+[build-system]
+requires = ["setuptools",
+            "setuptools-scm",
+            "wheel",
+            "extension-helpers",
+            "matplotlib",
+            "numpy",
+            "pandas",
+            "streamlit",
+            "nltk",
+            "scikit-learn",
+            "wordcloud"
+            ]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arxifyme"
+description = "A paper recommender for arXiv"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["template", "python", "gitpod", "vscode"]
+license = {text = "BSD 3-Clause License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD 3-Clause License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "requests",
+    'importlib-metadata; python_version<"3.8"',
+]
+
+[tool.setuptools]
+# By default, include-package-data is true in pyproject.toml, so you do
+# NOT have to specify this line.
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]                  # list of folders that contain the packages (["."] by default)
+include = ["arxifyme*"]        # package names should match these glob patterns (["*"] by default)
+exclude = ["arxifyme.tests*"]  # exclude packages matching these glob patterns (empty by default)
+namespaces = true                # to disable scanning PEP 420 namespaces (true by default)
+
+[tool.setuptools.package-data]
+# Examples
+# "*" = ["*.txt"]
+#arxifyme = ["*.txt", "*.rst"]
+#arxifyme.data = ["*.txt", "*.rst"]  # for subfolder of my_package
+
+dynamic = ["version"]
+
+[project.optional-dependencies]
+
+testing = [
+    "pytest",
+    "pytest-doctestplus",
+    "flake8",
+    "codecov",
+    "pytest-cov"]
+
+ci = [
+  "toml",
+  "yapf"]
+
+docs = [
+  "sphinx",
+  "sphinx-automodapi",
+  "numpydoc"]
+
+
+# [project.scripts]
+# my-script = "my_package.module:function"
+
+# ... other project metadata fields as specified in:
+#     https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
