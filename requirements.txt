@@ -5,8 +5,9 @@ streamlit
 nltk
 scikit-learn
 wordcloud
-PIL
+pillow
 bs4
 # pickle
 scipy
 dill
+pip
