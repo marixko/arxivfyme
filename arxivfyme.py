@@ -7,7 +7,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
 import streamlit as st
 from utils import clean, show_wordcloud, get_paper_information, give_recomm  
-import plotly.express as px
 from PIL import Image
 import dill as pickle
 
