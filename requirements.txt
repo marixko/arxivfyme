@@ -5,3 +5,8 @@ streamlit
 nltk
 scikit-learn
 wordcloud
+PIL
+bs4
+# pickle
+scipy
+dill
