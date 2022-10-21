@@ -1,4 +1,4 @@
-# arXivfyme
+# ARXIVFYME
 
 ![image](logo.png)
 
