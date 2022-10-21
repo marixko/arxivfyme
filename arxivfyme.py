@@ -73,6 +73,7 @@ st.markdown("Based on any article, this app will check what are the most recomme
 id = st.text_input("Write down an arXiv's ID (e.g. it can be one of your published articles or one that you really like):")
 n = st.sidebar.slider("Number of recommendations", 0,50,5)
 data = get_paper_information(id)
+
 output = give_recomm(data["abstract"], vectorizer,df, n )
 
 
@@ -85,3 +86,4 @@ text = " ".join(summ for summ in output.tokens_str.astype(str))
 
 fig = show_wordcloud(text, st.slider('max_words', 10, 200, 50, step = 10))
 st.pyplot(fig)
+
