@@ -77,6 +77,7 @@ output = give_recomm(data["abstract"], vectorizer,df, n )
 
 
 st.header("Wordcloud")
+st.write("Check the wordcloud of your recommendations!")
 tokens = output["abstract"].agg(cleanv2)
 output["tokens"] = tokens
 output['tokens_str'] = output['tokens'].apply(lambda x: ','.join(map(str, x)))
