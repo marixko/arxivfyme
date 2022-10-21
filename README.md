@@ -1,4 +1,4 @@
-# ARXIVFYME
+# ARXIVFY.ME
 
 ![image](logo.png)
 
