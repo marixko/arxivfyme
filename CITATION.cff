@@ -1,0 +1,24 @@
+# For citing software, see:
+
+# http://journals.aas.org/authors/references.html
+
+# GitHub has Zenodo DOI integration:
+# https://guides.github.com/activities/citable-code/
+
+# What is a CITATION.cff file:
+# https://citation-file-format.github.io/
+
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: arxifyme
+message: If you use this software, please cite it using the metadata from this file.
+date-released: 2022-10-21
+url: 'https://github.com/marixko/arxivfyme'
+version: 0.1
+type: software
+authors:
+  - family-names: Fouesneau
+    given-names: Morgan
+    orcid: 'https://orcid.org/0000-0001-9256-5516'
