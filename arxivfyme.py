@@ -46,8 +46,8 @@ stpwrds.update(additional_stopwords)
 
 
 
-df_astro = pd.read_json("astro_ph_2022.json")#[:N_max]
-df_bio = pd.read_json("q_bio_2022.json")
+df_astro = pd.read_json("astro_ph_2022.json", dtype={'id': 'string'}) #[:N_max]
+df_bio = pd.read_json("q_bio_2022.json", dtype={'id': 'string'})
 df = pd.concat([df_astro, df_bio])
 df.reset_index(inplace=True)
 
@@ -77,7 +77,7 @@ output = give_recomm(data["abstract"], vectorizer,df, n )
 
 
 st.header("Wordcloud")
-st.write("Check the wordcloud of your recommendations!")
+st.write("Check the wordcloud of your recommendations")
 tokens = output["abstract"].agg(cleanv2)
 output["tokens"] = tokens
 output['tokens_str'] = output['tokens'].apply(lambda x: ','.join(map(str, x)))
