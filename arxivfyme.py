@@ -6,7 +6,7 @@ from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.corpus import stopwords
 import streamlit as st
-from utils import clean, show_wordcloud, get_paper_information, give_recomm  
+from utils import cleanv2, show_wordcloud, get_paper_information, give_recomm  
 from PIL import Image
 import dill as pickle
 
@@ -43,19 +43,14 @@ stpwrds.update(additional_stopwords)
 # text = " ".join(summ for summ in df_pandas.tokens_str.astype(str))
 
 # df = pd.read_json('astro_ph_2022.json')
-# tokens = df["abstract"].agg(clean,lemma=True, stem=False)
-# df["tokens"] = tokens
-# df['tokens_str'] = df['tokens'].apply(lambda x: ','.join(map(str, x)))
-# text = " ".join(summ for summ in df.tokens_str.astype(str))
 
-# fig = show_wordcloud(text, st.slider('max_words', 5, 500, 200, step = 10))
-# st.pyplot(fig)
 
 
 df_astro = pd.read_json("astro_ph_2022.json")#[:N_max]
 df_bio = pd.read_json("q_bio_2022.json")
 df = pd.concat([df_astro, df_bio])
 df.reset_index(inplace=True)
+
 
 # X = vectorizer.fit_transform(tokens)
 # features = vectorizer.get_feature_names()
@@ -71,10 +66,21 @@ st.markdown("Let's use https://arxiv.org/abs/2207.00322 as an example. The ID fo
 data = get_paper_information("2207.00322")
 give_recomm(data["abstract"], vectorizer, df, 5)
 
+
 st.header("See what arXivfyMe recommends you today!")
 
 st.markdown("Based on any article, this app will check what are the most recommended articles for you to check out.")
 id = st.text_input("Write down an arXiv's ID (e.g. it can be one of your published articles or one that you really like):")
 n = st.sidebar.slider("Number of recommendations", 0,50,5)
 data = get_paper_information(id)
-give_recomm(data["abstract"], vectorizer,df, n )
+output = give_recomm(data["abstract"], vectorizer,df, n )
+
+
+st.header("Wordcloud")
+tokens = output["abstract"].agg(cleanv2)
+output["tokens"] = tokens
+output['tokens_str'] = output['tokens'].apply(lambda x: ','.join(map(str, x)))
+text = " ".join(summ for summ in output.tokens_str.astype(str))
+
+fig = show_wordcloud(text, st.slider('max_words', 10, 200, 50, step = 10))
+st.pyplot(fig)
