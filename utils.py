@@ -80,6 +80,16 @@ def clean(s):
     s = stem(s)
     return s
 
+def cleanv2(s):
+    s = remove_latex(s)
+    s = remove_punctuation(s)
+    s = remove_linebreaks(s)
+    s = tokenize(s)
+    s = remove_stopwords(s)
+    s = lemmatizer(s)
+
+    return s
+
 def show_wordcloud(data, maxwords):
     cloud = WordCloud(
         background_color='white',
@@ -153,4 +163,4 @@ def give_recomm(data, vectorizer, df, n=5):
     newdf = newdf.iloc[1:,]
     st.write(newdf["title"].head(n))
 
-    return
+    return newdf.head(n)
