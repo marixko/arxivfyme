@@ -10,9 +10,16 @@ import nltk
 from nltk.corpus import stopwords
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
-
+from nltk.stem import PorterStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
+import requests
+from bs4 import BeautifulSoup
+from sklearn.metrics import pairwise_distances
+import dill as pickle 
 
 nltk.download("stopwords")
+stemmer = PorterStemmer()
+vectorizer = TfidfVectorizer()
 stpwrds = set(stopwords.words("english"))
 additional_stopwords = set(('ie', 'eg', 'cf', 'etc', 'et', 'al'))
 stpwrds.update(additional_stopwords)
@@ -65,7 +72,12 @@ def clean(s):
     s = remove_linebreaks(s)
     s = tokenize(s)
     s = remove_stopwords(s)
-    s = lemmatizer(s)
+    # if lemma == True and stem==True:
+    #     stem = False
+    # if lemma:
+    #     s = lemmatizer(s)
+    # if stem:
+    s = stem(s)
     return s
 
 def show_wordcloud(data, maxwords):
@@ -83,3 +95,62 @@ def show_wordcloud(data, maxwords):
 
     plt.imshow(output)
     plt.show()
+    return fig
+
+
+def plot_tsne():
+    fig = plt.figure()
+    ax = fig.add_subplot(111, aspect=1)
+    ax.plot(X_tsne[mask_astro][:, 0], X_tsne[mask_astro][:, 1], ".", alpha=0.5, c="C0", label="Astro")
+    ax.plot(X_tsne[mask_bio][:, 0], X_tsne[mask_bio][:, 1], ".", alpha=0.5, c="C1", label="Bio")
+    ax.set_xlabel("t-SNE 1")
+    ax.set_ylabel("t-SNE 2")
+    ax.legend()
+    fig.tight_layout()
+
+
+def get_paper_information(paper_id:str) -> dict or str:
+    url = f'https://arxiv.org/abs/{paper_id}'
+    
+    try:
+        req = requests.get(url)
+        req.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        return str(err)
+
+    soup = BeautifulSoup(req.text, 'html.parser')
+    content = soup.find('div', {'id':'abs'})
+    
+    data = {}
+
+    data['title'] = content.find('h1', {'class': 'title mathjax'})
+    data['authors'] = content.find('div', {'class':'authors'})
+    data['abstract'] = content.find('blockquote', {'class', 'abstract mathjax'})
+
+    # cleaning html
+    for key, tag in data.items():
+        tag.span.decompose()
+        data[key] = tag.text.strip()
+
+    data['subject'] = soup.find('div', {'class':'browse'}).find('div', {'class':'current'}).text.strip()
+
+    return data
+
+def give_recomm(data, vectorizer, df, n=5):
+    with open('X.pickle', 'rb') as f:
+        X = pickle.load(f)
+
+    new_input = clean(data)
+    new_input = vectorizer.transform([data])
+    # features = vectorizer.get_feature_names()
+
+    ndb_dist_i = pairwise_distances(X, new_input)[:, 0]
+    # sort_ind_i = ndb_dist_i.argsort()
+    newdf = df.copy(deep=True)
+    newdf.insert(1, "dist", ndb_dist_i)
+    newdf.sort_values("dist", ascending=True, inplace=True)
+    # st.write(sort_ind_i)
+    newdf = newdf.iloc[1:,]
+    st.write(newdf["title"].head(n))
+
+    return
